@@ -28,15 +28,24 @@ public class MainWindow extends JFrame { //Наследуя от JFrame мы п�
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //это нужно для того чтобы при
         //закрытии окна закрывалась и программа,
         //иначе она останется висеть в процессах
-        parser=new Parser();
-        inputLabel=new JLabel("Введите строку для обработки");
-        inputedString= new JTextArea("10 3 1 2\n2 3 2 2\n5 6 7 1\n300 3 1 0");
-        calcButton=new JButton("Обработать строку");
+        parser = new Parser();
+        inputLabel = new JLabel("Введите строку для обработки");
+        inputedString = new JTextArea("10 3 1 2\n2 3 2 2\n5 6 7 1\n300 3 1 0");
+        calcButton = new JButton("Обработать строку");
+        outputedString = new JTextArea();
         calcButton.addActionListener(new ActionListener() {
                                          @Override
                                          public void actionPerformed(ActionEvent actionEvent) {
                                              //добавить вызов метода обработки строки
-                                             inputLabel.setText(parser.getResult(inputedString.getText()));
+                                             String result = "";
+                                             try {
+                                                 result = parser.getResult(inputedString.getText());
+                                             } catch (NotNumberElement e) {
+                                                 result += e.getMessage();
+                                                 e.printStackTrace();
+                                             }
+
+                                             outputedString.setText(result);
                                          }
                                      }
 
@@ -47,6 +56,7 @@ public class MainWindow extends JFrame { //Наследуя от JFrame мы п�
         buttonsPanel.add(inputLabel, BorderLayout.NORTH); //О размещении компонент поговорим позже
         buttonsPanel.add(inputedString, BorderLayout.NORTH);
         buttonsPanel.add(calcButton);
+        buttonsPanel.add(outputedString);
         add(buttonsPanel, BorderLayout.SOUTH);
     }
 
